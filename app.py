@@ -9,26 +9,43 @@ import pandas as pd
 # --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="IP Fraud Checker", page_icon="🛡️", layout="centered")
 
-# --- 2. CSS UNTUK MENYEMBUNYIKAN HEADER, FOOTER, MENU & TOMBOL DEPLOY ---
-# Kode ini menyembunyikan semua elemen bawaan Streamlit agar tampilan bersih
+# --- 2. CSS "NUKLIR" UNTUK MEMBERSIHKAN TAMPILAN ---
+# Script ini menyembunyikan Header, Footer, Menu, Toolbar, dan Tombol Deploy
 hide_streamlit_style = """
             <style>
-            /* Sembunyikan Menu Utama (Titik Tiga di pojok kanan atas) */
+            /* 1. Sembunyikan Menu Utama (Titik Tiga di pojok kanan atas) */
             #MainMenu {visibility: hidden;}
             
-            /* Sembunyikan Footer (Tulisan Made with Streamlit) */
+            /* 2. Sembunyikan Footer (Tulisan Made with Streamlit) */
             footer {visibility: hidden;}
             
-            /* Sembunyikan Header (Garis warna-warni diatas) */
+            /* 3. Sembunyikan Header (Garis warna-warni diatas) */
             header {visibility: hidden;}
             
-            /* Sembunyikan Tombol Deploy/Manage App (Tombol Merah & Profil di bawah) */
-            [data-testid="stToolbar"] {visibility: hidden !important;}
-            [data-testid="stManageAppButton"] {display: none !important;}
-            .stDeployButton {display: none !important;}
+            /* 4. Sembunyikan Toolbar & Dekorasi Streamlit Cloud */
+            [data-testid="stToolbar"] {
+                visibility: hidden !important;
+                display: none !important;
+            }
+            [data-testid="stDecoration"] {
+                visibility: hidden !important;
+                display: none !important;
+            }
+            [data-testid="stStatusWidget"] {
+                visibility: hidden !important;
+                display: none !important;
+            }
             
-            /* Sembunyikan elemen dekorasi tambahan jika ada */
-            .viewerBadge_container__1QSob {display: none !important;}
+            /* 5. Target Khusus Tombol Deploy/Manage App */
+            .stDeployButton {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            
+            /* 6. Mencegah klik di area atas (Header) */
+            div[data-testid="stAppViewContainer"] > section:first-child {
+                display: none !important;
+            }
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -46,7 +63,7 @@ st.sidebar.header("Konfigurasi API")
 DEFAULT_API_KEY = "6b3af5fa676dfad17873b78c6e1117f1" 
 api_key_input = st.sidebar.text_input("Masukkan ScraperAPI Key", value=DEFAULT_API_KEY, type="password")
 
-st.sidebar.info("Daftar di [ScraperAPI.com](https://www.scraperapi.com) untuk dapat key gratis.")
+st.sidebar.info("API KEY YA COKKKKKKKK")
 
 # --- FUNGSI REQUEST VIA SCRAPERAPI ---
 def get_fraud_score(ip, api_key):
