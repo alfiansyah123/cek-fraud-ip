@@ -6,9 +6,22 @@ import random
 import re
 import pandas as pd
 
-# --- KONFIGURASI HALAMAN WEBSITE ---
-st.set_page_config(page_title="IP Fraud Checker", page_icon="🛡️")
+# --- 1. KONFIGURASI HALAMAN ---
+st.set_page_config(page_title="IP Fraud Checker", page_icon="🛡️", layout="centered")
 
+# --- 2. CSS UNTUK MENYEMBUNYIKAN HEADER, FOOTER, & MENU (Embed Mode) ---
+# Ini akan menghilangkan tombol "Fork", ikon GitHub, dan tulisan "Made with Streamlit"
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            .viewerBadge_container__1QSob {display: none !important;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# --- JUDUL APLIKASI ---
 st.title("🛡️ IP Fraud Checker - Ccp Engine")
 st.markdown("""
 **Versi Cloud Hosting (Via ScraperAPI)**
@@ -17,11 +30,11 @@ Hanya IP dengan Score 0 (Clean) yang akan disimpan.
 
 # --- SIDEBAR KONFIGURASI ---
 st.sidebar.header("Konfigurasi API")
-# Masukkan API Key default Anda di sini jika ingin otomatis
+# API Key Default Anda
 DEFAULT_API_KEY = "6b3af5fa676dfad17873b78c6e1117f1" 
 api_key_input = st.sidebar.text_input("Masukkan ScraperAPI Key", value=DEFAULT_API_KEY, type="password")
 
-st.sidebar.info("Daftar di [ScraperAPI.com](https://www.scraperapi.com) untuk dapat key gratis (1000 request).")
+st.sidebar.info("Daftar di [ScraperAPI.com](https://www.scraperapi.com) untuk dapat key gratis.")
 
 # --- FUNGSI REQUEST VIA SCRAPERAPI ---
 def get_fraud_score(ip, api_key):
