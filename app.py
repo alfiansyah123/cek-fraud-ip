@@ -24,7 +24,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # --- JUDUL APLIKASI ---
 st.title("🛡️ IP Fraud Checker - Ccp Engine")
 st.markdown("""
-**Versi Cloud Hosting (Via ScraperAPI)**
+**Versi Turoxxxx BawoKKKK**
 Hanya IP dengan Score 0 (Clean) yang akan disimpan.
 """)
 
@@ -163,3 +163,4 @@ if uploaded_file is not None:
                 )
             else:
                 st.warning("Tidak ada IP dengan score 0 ditemukan (atau gagal mengambil data).")
+
