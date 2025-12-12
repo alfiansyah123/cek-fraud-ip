@@ -9,13 +9,25 @@ import pandas as pd
 # --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="IP Fraud Checker", page_icon="🛡️", layout="centered")
 
-# --- 2. CSS UNTUK MENYEMBUNYIKAN HEADER, FOOTER, & MENU (Embed Mode) ---
-# Ini akan menghilangkan tombol "Fork", ikon GitHub, dan tulisan "Made with Streamlit"
+# --- 2. CSS UNTUK MENYEMBUNYIKAN HEADER, FOOTER, MENU & TOMBOL DEPLOY ---
+# Kode ini menyembunyikan semua elemen bawaan Streamlit agar tampilan bersih
 hide_streamlit_style = """
             <style>
+            /* Sembunyikan Menu Utama (Titik Tiga di pojok kanan atas) */
             #MainMenu {visibility: hidden;}
+            
+            /* Sembunyikan Footer (Tulisan Made with Streamlit) */
             footer {visibility: hidden;}
+            
+            /* Sembunyikan Header (Garis warna-warni diatas) */
             header {visibility: hidden;}
+            
+            /* Sembunyikan Tombol Deploy/Manage App (Tombol Merah & Profil di bawah) */
+            [data-testid="stToolbar"] {visibility: hidden !important;}
+            [data-testid="stManageAppButton"] {display: none !important;}
+            .stDeployButton {display: none !important;}
+            
+            /* Sembunyikan elemen dekorasi tambahan jika ada */
             .viewerBadge_container__1QSob {display: none !important;}
             </style>
             """
@@ -163,4 +175,3 @@ if uploaded_file is not None:
                 )
             else:
                 st.warning("Tidak ada IP dengan score 0 ditemukan (atau gagal mengambil data).")
-
