@@ -60,7 +60,7 @@ Hanya IP dengan Score 0 (Clean) yang akan disimpan.
 # --- SIDEBAR KONFIGURASI ---
 st.sidebar.header("Konfigurasi API")
 # API Key Default Anda
-DEFAULT_API_KEY = "6b3af5fa676dfad17873b78c6e1117f1" 
+DEFAULT_API_KEY = "837bd81811ea8fcf5aecc3f3c219424d" 
 api_key_input = st.sidebar.text_input("Masukkan ScraperAPI Key", value=DEFAULT_API_KEY, type="password")
 
 st.sidebar.info("API KEY YA COKKKKKKKK")
@@ -192,3 +192,4 @@ if uploaded_file is not None:
                 )
             else:
                 st.warning("Tidak ada IP dengan score 0 ditemukan (atau gagal mengambil data).")
+
