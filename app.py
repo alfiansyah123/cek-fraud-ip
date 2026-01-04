@@ -9,77 +9,45 @@ import pandas as pd
 # --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="IP Fraud Checker", page_icon="🛡️", layout="centered")
 
-# --- 2. CSS "NUKLIR" UNTUK MEMBERSIHKAN TAMPILAN ---
-# Script ini menyembunyikan Header, Footer, Menu, Toolbar, dan Tombol Deploy
+
 hide_streamlit_style = """
             <style>
-            /* 1. Sembunyikan Menu Utama (Titik Tiga di pojok kanan atas) */
             #MainMenu {visibility: hidden;}
-            
-            /* 2. Sembunyikan Footer (Tulisan Made with Streamlit) */
             footer {visibility: hidden;}
-            
-            /* 3. Sembunyikan Header (Garis warna-warni diatas) */
             header {visibility: hidden;}
-            
-            /* 4. Sembunyikan Toolbar & Dekorasi Streamlit Cloud */
-            [data-testid="stToolbar"] {
-                visibility: hidden !important;
-                display: none !important;
-            }
-            [data-testid="stDecoration"] {
-                visibility: hidden !important;
-                display: none !important;
-            }
-            [data-testid="stStatusWidget"] {
-                visibility: hidden !important;
-                display: none !important;
-            }
-            
-            /* 5. Target Khusus Tombol Deploy/Manage App */
-            .stDeployButton {
-                display: none !important;
-                visibility: hidden !important;
-            }
-            
-            /* 6. Mencegah klik di area atas (Header) */
-            div[data-testid="stAppViewContainer"] > section:first-child {
-                display: none !important;
-            }
+            .viewerBadge_container__1QSob {display: none !important;}
             </style>
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# --- JUDUL APLIKASI ---
+
 st.title("🛡️ IP Fraud Checker - Ccp Engine")
 st.markdown("""
-**Versi Turoxxxx BawoKKKK**
+**Versi Cloud Hosting (Via ScraperAPI)**
 Hanya IP dengan Score 0 (Clean) yang akan disimpan.
 """)
 
-# --- SIDEBAR KONFIGURASI ---
+
 st.sidebar.header("Konfigurasi API")
-# API Key Default Anda
+
 DEFAULT_API_KEY = "837bd81811ea8fcf5aecc3f3c219424d" 
-api_key_input = st.sidebar.text_input("Masukkan ScraperAPI Key", value=DEFAULT_API_KEY, type="password")
+api_key_input = st.sidebar.text_input("Masukkan Api Key", value=DEFAULT_API_KEY, type="password")
 
-st.sidebar.info("API KEY YA COKKKKKKKK")
 
-# --- FUNGSI REQUEST VIA SCRAPERAPI ---
 def get_fraud_score(ip, api_key):
-    # Kita tidak nembak langsung ke Scamalytics, tapi lewat ScraperAPI
+    
     target_url = f"https://scamalytics.com/ip/{ip}"
     
-    # Settingan Payload ScraperAPI
+    
     payload = {
         'api_key': api_key,
         'url': target_url, 
-        'country_code': 'us', # Pura-pura akses dari Amerika
-        'device_type': 'desktop' # Pura-pura jadi PC Desktop
+        'country_code': 'us', 
+        'device_type': 'desktop' 
     }
 
     try:
-        # Kirim request ke ScraperAPI (bukan ke Scamalytics langsung)
+        
         response = requests.get('http://api.scraperapi.com', params=payload, timeout=60)
         
         # Cek jika quota habis atau error auth
@@ -91,8 +59,6 @@ def get_fraud_score(ip, api_key):
 
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # --- LOGIKA PARSING SAMA SEPERTI SEBELUMNYA ---
-        # Mencari Score
         score_div = soup.find('div', class_='score')
         score_text = score_div.get_text().strip() if score_div else ""
         
@@ -169,8 +135,6 @@ if uploaded_file is not None:
                     df = pd.DataFrame(clean_ips, columns=["Clean IP Address (Score 0)"])
                     table_placeholder.dataframe(df, height=200)
 
-                # JEDA WAKTU (Tidak perlu lama-lama karena pakai Proxy Rotation)
-                # ScraperAPI cukup kuat, tapi kita kasih jeda dikit biar sopan
                 time.sleep(1) 
                 
             status_text.success("Pengecekan Selesai!")
@@ -192,4 +156,3 @@ if uploaded_file is not None:
                 )
             else:
                 st.warning("Tidak ada IP dengan score 0 ditemukan (atau gagal mengambil data).")
-
