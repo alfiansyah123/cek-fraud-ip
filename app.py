@@ -7,31 +7,95 @@ import re
 import pandas as pd
 
 # --- 1. KONFIGURASI HALAMAN ---
+# --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(page_title="IP Fraud Checker", page_icon="🛡️", layout="centered")
 
-
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            .viewerBadge_container__1QSob {display: none !important;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-
-st.title("🛡️ IP Fraud Checker - Ccp Engine")
+# --- CUSTOM CSS FOR "CARD" UI ---
 st.markdown("""
-**Versi Cloud Hosting (Via ScraperAPI)**
-Hanya IP dengan Score 0 (Clean) yang akan disimpan.
-""")
+<style>
+    /* 1. Background Halaman Utama (Light Grey) */
+    .stApp {
+        background-color: #F0F2F6;
+    }
+
+    /* 2. Membuat Container Utama Menjadi Seperti "Card" */
+    [data-testid="stAppViewContainer"] > .main > .block-container {
+        background-color: #FFFFFF;
+        padding: 3rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        max-width: 800px;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    /* 3. Styling Header & Text */
+    h1 {
+        color: #1E1E1E;
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    p, li, .stMarkdown {
+        color: #4B5563;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* 4. Styling Input Uploader */
+    [data-testid="stFileUploader"] {
+        border: 2px dashed #E5E7EB;
+        border-radius: 10px;
+        padding: 1rem;
+        background-color: #F9FAFB;
+    }
+    
+    /* 5. Styling Tombol (Button) */
+    .stButton button {
+        background-color: #2563EB; /* Blue 600 */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+    }
+    .stButton button:hover {
+        background-color: #1D4ED8; /* Blue 700 */
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+    }
+
+    /* 6. Menyembunyikan Elemen Bawaan Streamlit (Menu, Footer) */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* 7. Styling Sidebar (Opsional) */
+    [data-testid="stSidebar"] {
+        background-color: #FFFFFF;
+        border-right: 1px solid #E5E7EB;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
+st.title("🛡️ IP Fraud Checker")
+st.markdown("""
+<div style="text-align: center; color: #6B7280; margin-bottom: 2rem;">
+    <b>Ccp Engine - Cloud Version</b> <br>
+    <small>Hanya IP dengan Score 0 (Clean) yang akan disimpan.</small>
+</div>
+""", unsafe_allow_html=True)
 
 
 st.sidebar.header("Konfigurasi API")
 
-DEFAULT_API_KEY = "837bd81811ea8fcf5aecc3f3c219424d" 
-api_key_input = st.sidebar.text_input("Masukkan Api Key", value=DEFAULT_API_KEY, type="password")
+DEFAULT_API_KEY = "6b3af5fa676dfad17873b78c6e1117f1" 
+api_key_input = st.sidebar.text_input("Masukkan ScraperAPI Key", value=DEFAULT_API_KEY, type="password")
+
+st.sidebar.info("Daftar di [ScraperAPI.com](https://www.scraperapi.com) untuk dapat key gratis.")
 
 
 def get_fraud_score(ip, api_key):
