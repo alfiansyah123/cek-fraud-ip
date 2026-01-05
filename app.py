@@ -13,79 +13,94 @@ st.set_page_config(page_title="IP Fraud Checker", page_icon="🛡️", layout="c
 # --- CUSTOM CSS FOR "CARD" UI ---
 st.markdown("""
 <style>
-    /* 1. Background Halaman Utama (Light Grey) */
+    /* 1. Background Halaman Utama */
     .stApp {
-        background-color: #F0F2F6;
+        background-color: #F0F4F8; /* Light Blue-Grey */
     }
 
-    /* 2. Membuat Container Utama Menjadi Seperti "Card" */
+    /* 2. Container "Card" Putih - Mengatur seluruh area konten */
     [data-testid="stAppViewContainer"] > .main > .block-container {
         background-color: #FFFFFF;
-        padding: 3rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        max-width: 800px;
+        padding: 3rem; 
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.05); /* Soft Shadow */
+        max-width: 700px; /* Lebar card diperkecil biar proporsional */
         margin-top: 2rem;
         margin-bottom: 2rem;
     }
 
     /* 3. Styling Header & Text */
     h1 {
-        color: #1E1E1E;
+        color: #111827;
         font-family: 'Inter', sans-serif;
-        font-weight: 700;
+        font-weight: 800;
         text-align: center;
+        margin-top: 0;
         margin-bottom: 0.5rem;
-    }
-    p, li, .stMarkdown {
-        color: #4B5563;
-        font-family: 'Inter', sans-serif;
+        font-size: 2.2rem;
     }
     
+    .subtitle {
+        text-align: center;
+        color: #6B7280;
+        font-family: 'Inter', sans-serif;
+        margin-bottom: 2.5rem;
+        font-size: 0.95rem;
+    }
+
     /* 4. Styling Input Uploader */
     [data-testid="stFileUploader"] {
-        border: 2px dashed #E5E7EB;
-        border-radius: 10px;
-        padding: 1rem;
+        border: 2px dashed #D1D5DB;
+        border-radius: 12px;
+        padding: 1.5rem;
         background-color: #F9FAFB;
+        transition: border-color 0.3s;
+    }
+    [data-testid="stFileUploader"]:hover {
+        border-color: #3B82F6;
     }
     
     /* 5. Styling Tombol (Button) */
     .stButton button {
-        background-color: #2563EB; /* Blue 600 */
+        background-color: #0F172A; /* Dark Navy for premium feel */
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 0.6rem 1.2rem;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
         font-weight: 600;
+        letter-spacing: 0.5px;
         width: 100%;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+        margin-top: 1rem;
+        transition: all 0.2s ease;
     }
     .stButton button:hover {
-        background-color: #1D4ED8; /* Blue 700 */
-        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);
+        background-color: #1E293B;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* 6. Menyembunyikan Elemen Bawaan Streamlit (Menu, Footer) */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    /* 6. Hapus elemen default */
+    #MainMenu, footer, header {visibility: hidden;}
     
-    /* 7. Styling Sidebar (Opsional) */
-    [data-testid="stSidebar"] {
-        background-color: #FFFFFF;
-        border-right: 1px solid #E5E7EB;
+    /* 7. Hasil Style */
+    .success-box {
+        padding: 1rem;
+        background-color: #ECFDF5;
+        border: 1px solid #10B981;
+        border-radius: 8px;
+        color: #064E3B;
+        text-align: center;
+        margin-top: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
 
-
-st.title("🛡️ IP Fraud Checker")
+# --- HEADER (Sekarang manual pake HTML biar masuk Card) ---
 st.markdown("""
-<div style="text-align: center; color: #6B7280; margin-bottom: 2rem;">
+<h1>🛡️ IP Fraud Checker</h1>
+<div class="subtitle">
     <b>Ccp Engine - Cloud Version</b> <br>
-    <small>Hanya IP dengan Score 0 (Clean) yang akan disimpan.</small>
+    Hanya IP dengan Score 0 (Clean) yang akan disimpan.
 </div>
 """, unsafe_allow_html=True)
 
@@ -151,10 +166,10 @@ if uploaded_file is not None:
     stringio = uploaded_file.getvalue().decode("utf-8")
     ip_list = [line.strip() for line in stringio.splitlines() if line.strip()]
     
-    st.write(f"Total IP ditemukan: **{len(ip_list)}**")
+    st.markdown(f"<p style='text-align:center; color:#6B7280; font-size:0.9rem;'>Total IP ditemukan: <b>{len(ip_list)}</b></p>", unsafe_allow_html=True)
 
     # Tombol Mulai
-    if st.button("Mulai Pengecekan 🚀"):
+    if st.button("MULAI CEK SEKARANG ✨"):
         
         if not api_key_input:
             st.error("⚠️ Harap masukkan ScraperAPI Key di menu sebelah kiri (Sidebar)!")
@@ -171,7 +186,7 @@ if uploaded_file is not None:
             
             for i, ip in enumerate(ip_list):
                 # Update status
-                status_text.text(f"Sedang mengecek [{i+1}/{total_ips}]: {ip} via Proxy ...")
+                status_text.text(f"Sedang mengecek [{i+1}/{total_ips}]: {ip}...")
                 
                 # Cek Score (Panggil fungsi baru)
                 score = get_fraud_score(ip, api_key_input)
@@ -194,29 +209,28 @@ if uploaded_file is not None:
                 # Update Progress Bar
                 progress_bar.progress((i + 1) / total_ips)
                 
-                # Tampilkan tabel hasil sementara (hanya yang clean)
-                if clean_ips:
-                    df = pd.DataFrame(clean_ips, columns=["Clean IP Address (Score 0)"])
-                    table_placeholder.dataframe(df, height=200)
-
                 time.sleep(1) 
                 
-            status_text.success("Pengecekan Selesai!")
+            status_text.empty() # Hapus text loading setelah selesai
+            progress_bar.empty() # Hapus progress bar
             
             # --- HASIL AKHIR ---
             st.divider()
-            st.subheader("Hasil Pengecekan")
-            st.write(f"Ditemukan **{len(clean_ips)}** IP Bersih.")
             
             if clean_ips:
-                # Membuat string untuk didownload
-                result_text = "\n".join(clean_ips)
+                st.markdown(f"""
+                <div class="success-box">
+                    <h3>✅ Selesai!</h3>
+                    <p>Ditemukan <b>{len(clean_ips)}</b> IP Bersih.</p>
+                </div>
+                """, unsafe_allow_html=True)
                 
-                st.download_button(
-                    label="📥 Download List IP Bersih (.txt)",
-                    data=result_text,
-                    file_name="clean_ips_result.txt",
-                    mime="text/plain"
-                )
+                st.write("") # Spacer
+                
+                st.subheader("📋 Hasil (Copy All)")
+                # Tampilkan sebagai Code Block agar bisa langsung di-Copy
+                result_text = "\n".join(clean_ips)
+                st.code(result_text, language="text")
+                
             else:
                 st.warning("Tidak ada IP dengan score 0 ditemukan (atau gagal mengambil data).")
