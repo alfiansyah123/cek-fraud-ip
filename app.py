@@ -13,43 +13,48 @@ st.markdown("""
     /* IMPORT FONT INTER */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    /* 1. Global Background */
+    /* 1. Global Background & Text Color Reset */
     .stApp {
-        background-color: #F3F4F6; /* Light Grey like reference */
-        font-family: 'Inter', sans-serif;
+        background-color: #F3F4F6 !important; /* Light Grey */
+        font-family: 'Inter', sans-serif !important;
+    }
+    
+    /* Force text color to dark (override Dark Mode defaults) */
+    h1, h2, h3, h4, h5, h6, p, div, span, label, .stMarkdown {
+        color: #111827 !important;
     }
 
     /* 2. Main Card Container */
     [data-testid="stAppViewContainer"] > .main > .block-container {
-        background-color: #FFFFFF;
-        padding: 40px;
+        background-color: #FFFFFF !important;
+        padding: 40px !important;
         border-radius: 16px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         max-width: 800px;
-        margin-top: 3rem;
-        margin-bottom: 3rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
 
     /* 3. Header Styling */
     h1 {
-        color: #111827;
         font-family: 'Inter', sans-serif;
-        font-weight: 700;
-        font-size: 24px;
+        font-weight: 800 !important;
+        font-size: 26px !important;
         text-align: center;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.5rem !important;
+        margin-top: 0 !important;
     }
     
     .header-subtitle {
         text-align: center;
-        color: #6B7280;
+        color: #6B7280 !important; /* Lighter grey for subtitle */
         font-size: 14px;
         margin-bottom: 2rem;
     }
 
     /* 4. Upload Area Styling */
     [data-testid="stFileUploader"] {
-        border: 1px dashed #E5E7EB;
+        border: 2px dashed #E5E7EB;
         border-radius: 8px;
         padding: 20px;
         background-color: #FAFAFA;
@@ -57,46 +62,49 @@ st.markdown("""
     [data-testid="stFileUploader"] section {
         padding: 0;
     }
+    /* Fix text inside uploader which might be white in dark mode */
+    [data-testid="stFileUploader"] div, [data-testid="stFileUploader"] span {
+        color: #111827 !important;
+    }
+    [data-testid="stFileUploader"] small {
+        color: #6B7280 !important;
+    }
 
     /* 5. Button Styling (Dark/Black) */
     .stButton button {
-        background-color: #1F2937; /* Dark Grey/Black */
-        color: white;
+        background-color: #1F2937 !important; /* Dark Grey/Black */
+        color: white !important;
         border: none;
         border-radius: 8px;
-        padding: 10px 20px;
-        font-weight: 500;
-        font-size: 14px;
+        padding: 12px 24px;
+        font-weight: 600;
+        font-size: 15px;
         width: 100%;
-        transition: background-color 0.2s;
+        transition: transform 0.1s ease-in-out;
     }
     .stButton button:hover {
-        background-color: #111827; /* Darker on hover */
-        border-color: #111827;
-        color: white;
+        background-color: #000000 !important; /* Pure Black on hover */
+        transform: scale(1.01);
     }
-    .stButton button:focus {
-        color: white;
-    }
-
+    
     /* 6. Success Message Box */
     .success-box {
-        background-color: #D1FAE5; /* Light Green */
-        color: #065F46; /* Dark Green Text */
+        background-color: #ECFDF5 !important;
+        border: 1px solid #10B981;
+        color: #064E3B !important;
         padding: 16px;
         border-radius: 8px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 500;
-        margin-bottom: 20px;
-        margin-top: 20px;
+        text-align: center;
+        margin: 20px 0;
+    }
+    .success-box span {
+        font-size: 1.2rem;
     }
     
     /* 7. Footer / Copyright */
     .footer-copyright {
         text-align: center;
-        color: #9CA3AF;
+        color: #9CA3AF !important;
         font-size: 12px;
         margin-top: 40px;
         border-top: 1px solid #E5E7EB;
@@ -106,11 +114,10 @@ st.markdown("""
     /* Hide standard elements */
     #MainMenu, footer, header {visibility: hidden;}
     
-    /* Table Styling adjustment */
-    .stDataFrame {
-        border: 1px solid #E5E7EB;
-        border-radius: 8px;
-        overflow: hidden;
+    /* Remove padding to pull everything into the card */
+    .block-container {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
     }
 
 </style>
@@ -120,9 +127,10 @@ st.markdown("""
 
 # 1. Header Section
 st.markdown("""
-<h1>🛡️ IP Fraud Checker - Ccp Engine</h1>
+<h1>🛡️ IP Fraud Checker</h1>
 <div class="header-subtitle">
-    Versi Cloud Hosting (Via ScraperAPI) Hanya IP dengan Score 0 (Clean) yang akan disimpan.
+    <b>Ccp Engine - Cloud Version</b><br>
+    Hanya IP dengan Score 0 (Clean) yang akan disimpan.
 </div>
 """, unsafe_allow_html=True)
 
